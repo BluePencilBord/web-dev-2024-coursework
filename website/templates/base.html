@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ru" data-bs-theme="dark">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Рецепты{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  </head>
+  <body class="bg-info">
+    <nav class="navbar navbar-expand-lg sticky-top border-bottom bg-info-subtle">
+      <div class="container">
+        <a class="navbar-brand" href="#">Книга рецептов</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end" id="navbarToggler">
+          <div class="navbar-nav">
+            {% if user.is_authenticated %}
+            <span class="navbar-text me-3">
+              {{ user.last_name }} {{ user.first_name[0] }}.{{ user.middle_name[0] }}.
+            </span>
+            <a href="/logout" class="nav-item nav-link" id="logout">Выйти</a>
+            <a href="/" class="nav-item nav-link" id="home">Главная</a>
+            {% else %}
+            <a href="{{ url_for('auth.login') }}" class="nav-item nav-link" id="login">Войти</a>
+            <a href="/" class="nav-item nav-link" id="home">Главная</a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </nav>
+    <div class="container">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          {% if category == 'error' %}
+          <div class="d-flex justify-content-center">
+            <div class="alert alert-danger alert-dismissible fade show mt-3 w-50" role="alert">
+              {{ message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+          </div>
+          {% else %}
+          <div class="d-flex justify-content-center">
+            <div class="alert alert-success alert-dismissible fade show mt-3 w-50" role="alert">
+              {{ message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+          </div>
+          {% endif %}
+        {% endfor %}
+      {% endif %}
+      {% endwith %}
+      {% block content %}
+      {% endblock %}
+    </div>
+    <footer class="mt-auto py-3 bg-secondary">
+      <div class="container text-center">
+          <span class="fw-bold">Ахмадов Сайд-Эмин 221-329</span>
+      </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+  </body>
+</html>

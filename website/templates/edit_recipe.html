@@ -1,0 +1,6 @@
+{% extends "base.html" %} 
+{% block title %}Изменить Рецепт{% endblock %}
+{% block content %}
+{% from 'macros.html' import recipe_form %}
+{{ recipe_form(recipe) }}
+{% endblock %}

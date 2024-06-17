@@ -1,0 +1,34 @@
+{% extends "base.html" %} 
+{% block title %}{{ recipe.title }}{% endblock %}
+{% block content %}
+<div class="container d-flex flex-column align-items-center mt-3">
+  <div class="card mb-3 w-75 h-75">
+    <div class="column g-0">
+      <div>
+        <img src="{{ url_for('static', filename='photos/' + recipe.photo.file_name) }}" class="card-img-top" alt="{{ recipe.photo.file_name }}">
+      </div>
+      <div class="col-md-8">
+        <div class="card-body">
+          <h1 class="card-title"> {{ recipe.title }} </h1>
+          <p class="card-text">  {{ recipe.description.replace('\n', '<br>') | safe }} </p>
+          <p class="card-text"><strong>Время приготовления</strong> : {{ recipe.time_to_cook }} минут</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% for review in reviews %}
+    <div class="card mb-3">
+      <h5 class="card-header">
+        {{ review.user.last_name }} {{ review.user.first_name[0] }}.{{ review.user.middle_name[0] }}.
+      </h5>
+      <div class="card-body">
+        <h5 class="card-title">Oценка - {{ review.score }}</h5>
+        <p class="card-text">{{ review.text.replace('\n', '<br>') | safe }}</p>
+      </div>
+    </div>
+  {% endfor %}
+  {% if not user_reviewed %}
+    <a href="{{ url_for('views.add_review', id=recipe.id) }}" class="btn btn-primary mb-3" id="add_review">Написать отзыв <i class="bi bi-pencil-square"></i></a>
+  {% endif %}
+</div>
+{% endblock %}

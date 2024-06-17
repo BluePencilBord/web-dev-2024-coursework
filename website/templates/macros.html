@@ -1,0 +1,32 @@
+{% macro recipe_form(recipe) %}
+<form method="POST" enctype="multipart/form-data">
+  <div class="container d-flex flex-column align-items-stretch justify-content-center w-75">
+    <div class="form-floating my-2">
+      <input type="text" class="form-control" id="title" name="title" placeholder="Название блюда" value="{{ recipe.title }}">
+      <label for="floatingInput">
+          Название
+      </label>
+    </div>
+    <textarea name="description" placeholder="Описание процесса приготовления"></textarea>
+    <div class="form-floating mb-2">
+      <input type="number" class="form-control" id="time_to_cook" name="time_to_cook" placeholder="Время приготовления" required min="1" max="9999" value="{{ recipe.time_to_cook }}">
+      <label for="floatingInput">
+          Время приготовления
+      </label>
+    </div>
+    {% if not recipe %}
+    <div class="mb-2">
+      <label for="formFile" class="form-label">Фото блюда</label>
+      <input type="file" class="form-control" id="formFile" name="file">
+    </div>
+    {% endif %}
+    <button type="submit" class="btn btn-primary my-2">Отправить</button>
+  </div>
+</form>
+<script src="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.css">
+<script>
+  const easyMDE = new EasyMDE()
+  easyMDE.value(`{{ recipe.description if recipe.description else 'Описание процесса приготовления' }}`)
+</script>
+{% endmacro %}
